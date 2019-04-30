@@ -47,14 +47,11 @@ int nxt_proc ( struct process *proc, int n, int policy ) {
 		}
 		else nxt_who=now_who;
 	}
-	else if ( policy == SJF ) {
+	else if ( policy == SJF || policy == PSJF ) {
 		for ( int i=0; i<n; ++i ) {
 			if ( proc[i].pid == -1 || proc[i].t_exec == 0 ) continue;
 			if ( nxt_who == -1 || proc[i].t_exec < proc[nxt_who].t_exec ) nxt_who=i;
 		}
-	}
-	else if ( policy == PSJF ) {
-
 	}
 	else {
 		puts("WTF policy ~ OAO");
