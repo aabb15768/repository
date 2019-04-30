@@ -42,7 +42,7 @@ int nxt_proc ( struct process *proc, int n, int policy ) {
 		}
 		else if ( (now_time-last_switch)%500 == 0 ) {
 			nxt_who=(now_who+1)%n;
-			while ( proc[nxt_who].pid == -1 || proc[nxt_who].t_exec == 0 ) nxt_who=(now_who+1)%n;
+			while ( proc[nxt_who].pid == -1 || proc[nxt_who].t_exec == 0 ) nxt_who=(nxt_who+1)%n;
 			
 		}
 		else nxt_who=now_who;
@@ -57,6 +57,7 @@ int nxt_proc ( struct process *proc, int n, int policy ) {
 		puts("WTF policy ~ OAO");
 		exit(1);
 	}
+	// if( proc[nxt_who].t_exec == 0 ) printf("getcha\n");
 	return (nxt_who);
 }
 
