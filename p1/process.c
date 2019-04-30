@@ -51,7 +51,10 @@ int proc_exec ( struct process proc ) {
         end_sec = spec.tv_sec;
         end_nsec = spec.tv_nsec;
 		sprintf(dmesg_msg, "[project1] %d %lu.%09lu %lu.%09lu\n", getpid(), start_sec, start_nsec, end_sec, end_nsec);
-		printf("%s\n", dmesg_msg);
+		FILE *f = fopen("/dev/kmsg", "a");
+    	fprintf(f, "%s", dmesg_msg);
+    	fclose(f);
+		// printf("%s\n", dmesg_msg);
 		//syscall(PRINTK, dmesg_msg);
 		exit(0);
 	}
