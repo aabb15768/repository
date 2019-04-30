@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/syscall.h>
-#include <inttypes.h>
+#include <inttypes.h>w
 #include <math.h>
 #include <time.h>
 
@@ -18,20 +18,20 @@ int proc_assign_cpu(int pid, int cpu_num) {
     CPU_ZERO(&mask);
     CPU_SET(cpu_num, &mask);
     // assign process with pid to cpu_num cpu
-    sched_setaffinity(pid, sizeof(mask), &mask);   
+    sched_setaffinity(pid, sizeof(mask), &mask);
     return 0;
 }
 
 // execute process specified
 int proc_exec(struct process proc) {
     int pid = fork();
-    
+
     // fork fail
     if (pid < 0) {
         perror("fork fail");
         return -1;
     }
-    
+
     // child process
     if (pid == 0) {
         unsigned long start_sec, start_nsec, end_sec, end_nsec;
@@ -47,15 +47,15 @@ int proc_exec(struct process proc) {
         clock_gettime(CLOCK_REALTIME, &spec);
         end_sec = spec.tv_sec;
         end_nsec = spec.tv_nsec;
-
+        sprintf(to_dmesg, "[project1] %d %lu.%09lu %lu.%09lu\n", getpid(), start_sec, start_nsec, end_sec, end_nsec);
         FILE *f = fopen("/dev/kmsg", "a");
         fprintf(f, "%s", dmesg_msg);
         fclose(f);
         exit(0);
     }
-    
+
     proc_assign_cpu(pid, CHILD_CPU);
-    
+
     return pid;
 }
 
@@ -64,7 +64,7 @@ int proc_block(int pid) {
     struct sched_param param;
     param.sched_priority = 0;
     int ret = sched_setscheduler(pid, SCHED_IDLE, &param);
-    
+
     return ret;
 }
 
@@ -73,6 +73,6 @@ int proc_wakeup(int pid) {
     struct sched_param param;
     param.sched_priority = 0;
     int ret = sched_setscheduler(pid, SCHED_OTHER, &param);
-    
+
     return ret;
 }

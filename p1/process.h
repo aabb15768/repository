@@ -4,10 +4,10 @@
 #include <sys/types.h>
 #define CHILD_CPU 1
 #define PARENT_CPU 0
-#define UNIT_T() {   
-volatile unsigned long i;        
-for (i = 0; i < 1000000UL; i++);    
-}                        
+#define UNIT_T() {   \
+volatile unsigned long i; \
+for (i = 0; i < 1000000UL; i++);    \
+}                        \
 
 struct process {
     char name[32];
