@@ -7,10 +7,10 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/syscall.h>
-#include <inttypes.h>w
+#include <inttypes.h>
 #include <math.h>
 #include <time.h>
-
+#define MSG_SIZE 300
 // assign cpu to process
 int proc_assign_cpu(int pid, int cpu_num) {
     // add cpu_num cpu to cpu set
@@ -47,7 +47,7 @@ int proc_exec(struct process proc) {
         clock_gettime(CLOCK_REALTIME, &spec);
         end_sec = spec.tv_sec;
         end_nsec = spec.tv_nsec;
-        sprintf(to_dmesg, "[project1] %d %lu.%09lu %lu.%09lu\n", getpid(), start_sec, start_nsec, end_sec, end_nsec);
+        sprintf(dmesg_msg, "[project1] %d %lu.%09lu %lu.%09lu\n", getpid(), start_sec, start_nsec, end_sec, end_nsec);
         FILE *f = fopen("/dev/kmsg", "a");
         fprintf(f, "%s", dmesg_msg);
         fclose(f);
