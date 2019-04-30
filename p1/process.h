@@ -1,31 +1,29 @@
-#ifndef _PROCESS_H_
+#ifndef _PROCESS_H_ // 避免循環引用
 #define _PROCESS_H_
 
 #include <sys/types.h>
-#define CHILD_CPU 1
+
+typedef unsigned long UL;
+
 #define PARENT_CPU 0
-#define UNIT_T() {   \
-volatile unsigned long i; \
-for (i = 0; i < 1000000UL; i++);    \
-}                        \
+#define CHILD_CPU 1
+
+#define UNIT_T() \
+{ \
+volatile UL i; \
+for ( i=0; i<1000000UL; i++ ); \
+} \
 
 struct process {
-    char name[32];
-    int t_ready;
-    int t_exec;
-    pid_t pid;
+	char name[256];
+	int t_ready;
+	int t_exec;
+	pid_t pid; // initial: -1
 };
 
-// assign cpu to process
-int proc_assign_cpu(int pid, int core);
-
-// execute process specified
-int proc_exec(struct process proc);
-
-// set low priority to process pid
-int proc_block(int pid);
-
-// wake up process
-int proc_wakeup(int pid);
+int proc_assign_cpu ( pid_t pid, int core );
+int proc_exec ( struct process proc );
+int proc_block ( pid_t pid );
+int proc_wakeup ( pid_t pid );
 
 #endif

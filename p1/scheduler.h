@@ -1,17 +1,14 @@
-#ifndef _SCHEDULING_H_
-#define _SCHEDULING_H_
+#ifndef _SCHEDULER_H_ // 避免循環引用
+#define _SCHEDULER_H_
 
 #include "process.h"
 
-#define FIFO    1
-#define RR    2
-#define SJF    3
-#define PSJF    4
+// scheduler
+#define FIFO 	0
+#define RR		1
+#define SJF		2
+#define PSJF	3
 
-/* Return next process to run */
-//int next_process(struct process *proc, int nproc, int policy);
-
-/* Running scheduler */
-int scheduling(struct process *proc, int nproc, int policy);
+int scheduling ( struct process *proc, int n, int policy );
 
 #endif
